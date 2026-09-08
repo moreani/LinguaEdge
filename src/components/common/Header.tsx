@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle, showLanguageBad
           ) : (
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-brand-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                LinguaLocal
+                LinguaEdge
               </span>
               <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300">
                 100% Offline

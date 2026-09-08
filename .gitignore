@@ -27,3 +27,5 @@ dist-ssr
 *.gguf
 *.part
 *.bin
+models/
+models/*
