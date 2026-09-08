@@ -29,3 +29,14 @@ dist-ssr
 *.bin
 models/
 models/*
+
+# Android Build & Cache
+.gradle/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+local.properties
+android/.cxx/
+android/.externalNativeBuild/
+

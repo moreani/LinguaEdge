@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, Dumbbell, MessageSquare, BookOpen, BarChart3, Settings } from 'lucide-react';
+import { MessageSquare, BookOpen, Settings } from 'lucide-react';
 
-export type TabType = 'home' | 'practice' | 'chat' | 'vocabulary' | 'progress' | 'profile';
+export type TabType = 'tutor' | 'vocabulary' | 'settings';
 
 interface BottomNavProps {
   currentTab: TabType;
@@ -15,12 +15,9 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   dueVocabularyCount = 0
 }) => {
   const tabs: { id: TabType; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { id: 'home', label: 'Home', icon: <Home className="w-5 h-5" /> },
-    { id: 'chat', label: 'AI Tutor', icon: <MessageSquare className="w-5 h-5" /> },
-    { id: 'practice', label: 'Practice', icon: <Dumbbell className="w-5 h-5" /> },
-    { id: 'vocabulary', label: 'Vocab', icon: <BookOpen className="w-5 h-5" />, badge: dueVocabularyCount },
-    { id: 'progress', label: 'Progress', icon: <BarChart3 className="w-5 h-5" /> },
-    { id: 'profile', label: 'Models', icon: <Settings className="w-5 h-5" /> },
+    { id: 'tutor', label: 'AI Tutor', icon: <MessageSquare className="w-5 h-5" /> },
+    { id: 'vocabulary', label: 'Vocabulary', icon: <BookOpen className="w-5 h-5" />, badge: dueVocabularyCount },
+    { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
   return (

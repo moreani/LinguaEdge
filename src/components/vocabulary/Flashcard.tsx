@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { VocabularyWord } from '../../types';
 import { RotateCw, Volume2, Sparkles, Check, ChevronRight } from 'lucide-react';
 import { ReviewGrade } from '../../learning/SpacedRepetition';
+import { SpeakButton } from '../common/SpeakButton';
 
 interface FlashcardProps {
   word: VocabularyWord;
@@ -10,17 +11,6 @@ interface FlashcardProps {
 
 export const Flashcard: React.FC<FlashcardProps> = ({ word, onGrade }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-
-  const simulatePronunciation = () => {
-    setIsPlayingAudio(true);
-    // In local browser, we can use window.speechSynthesis (runs locally on-device)
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      const utterance = new SpeechSynthesisUtterance(word.word);
-      window.speechSynthesis.speak(utterance);
-    }
-    setTimeout(() => setIsPlayingAudio(false), 1200);
-  };
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -48,20 +38,23 @@ export const Flashcard: React.FC<FlashcardProps> = ({ word, onGrade }) => {
               <p className="text-xs text-brand-400 font-mono mb-4">/{word.phonetic}/</p>
             )}
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                simulatePronunciation();
-              }}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                isPlayingAudio
-                  ? 'bg-brand-500 text-white border-brand-400 scale-105'
-                  : 'bg-slate-800/90 text-slate-300 border-slate-700 hover:bg-slate-700'
-              }`}
-            >
-              <Volume2 className={`w-3.5 h-3.5 ${isPlayingAudio ? 'animate-pulse' : ''}`} />
-              <span>{isPlayingAudio ? 'Speaking...' : 'Listen Pronunciation'}</span>
-            </button>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <SpeakButton
+                text={word.word}
+                language={word.targetLanguage}
+                label="Listen"
+                variant="pill"
+                size="md"
+              />
+              <SpeakButton
+                text={word.word}
+                language={word.targetLanguage}
+                label="0.75x Slow"
+                slow
+                variant="pill"
+                size="md"
+              />
+            </div>
           </div>
         ) : (
           // Back of card
@@ -73,10 +66,18 @@ export const Flashcard: React.FC<FlashcardProps> = ({ word, onGrade }) => {
               <h3 className="text-2xl font-bold text-white">{word.translation}</h3>
             </div>
 
-            <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3 text-left">
-              <p className="text-xs text-brand-300 font-medium italic mb-1">
-                "{word.exampleSentence}"
-              </p>
+            <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3 text-left space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-xs text-brand-300 font-medium italic flex-1">
+                  "{word.exampleSentence}"
+                </p>
+                <SpeakButton
+                  text={word.exampleSentence}
+                  language={word.targetLanguage}
+                  size="xs"
+                  variant="ghost"
+                />
+              </div>
               <p className="text-xs text-slate-400">
                 "{word.exampleTranslation}"
               </p>

@@ -2,6 +2,8 @@ import React from 'react';
 import { ConversationTopic } from '../../types';
 import { Utensils, Plane, Clock, ShoppingBag, Briefcase, Users, HeartPulse, Compass } from 'lucide-react';
 
+import { PandaAvatar } from '../common/PandaAvatar';
+
 interface TopicSelectorProps {
   onSelectTopic: (topic: ConversationTopic) => void;
 }
@@ -19,12 +21,15 @@ const TOPICS: { topic: ConversationTopic; icon: React.ReactNode; desc: string }[
 
 export const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectTopic }) => {
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <div className="text-center mb-5">
-        <h3 className="text-lg font-bold text-white mb-1">Choose a Conversation Topic</h3>
-        <p className="text-xs text-slate-400">
-          Your offline AI teacher will adapt vocabulary and grammar to your selected theme.
-        </p>
+    <div className="p-4 max-w-xl mx-auto space-y-4">
+      <div className="bg-gradient-to-br from-slate-900/90 via-slate-800 to-indigo-950/40 border border-brand-500/30 rounded-3xl p-4 flex items-center gap-3.5 shadow-xl">
+        <PandaAvatar size="lg" mood="cheering" className="flex-shrink-0" />
+        <div>
+          <h3 className="text-sm font-bold text-white">Hi! I'm Pandi, your tutor 🐼</h3>
+          <p className="text-xs text-slate-300 mt-0.5">
+            Pick a topic below and let's practice speaking together! Tap any message to hear pronunciation.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

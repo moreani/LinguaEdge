@@ -2,6 +2,8 @@ import React from 'react';
 import { Message } from '../../types';
 import { Bot, User, Sparkles } from 'lucide-react';
 import { formatRelativeTime } from '../../utils/formatters';
+import { SpeakButton } from '../common/SpeakButton';
+import { PandaAvatar } from '../common/PandaAvatar';
 
 interface ChatMessageProps {
   message: Message;
@@ -15,13 +17,13 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onViewCorrect
   return (
     <div className={`flex gap-3 mb-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
       <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white shadow-md ${
+        className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-white shadow-md ${
           isUser
             ? 'bg-gradient-to-tr from-brand-600 to-indigo-600'
-            : 'bg-gradient-to-tr from-slate-700 to-slate-600 border border-slate-600'
+            : 'bg-white/10 p-0.5'
         }`}
       >
-        {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4 text-brand-400" />}
+        {isUser ? <User className="w-4 h-4" /> : <PandaAvatar size="sm" mood={hasCorrection ? 'thinking' : 'talking'} />}
       </div>
 
       <div className={`max-w-[82%] sm:max-w-[75%] ${isUser ? 'items-end' : 'items-start'} flex flex-col`}>
@@ -46,9 +48,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onViewCorrect
           )}
         </div>
 
-        <span className="text-[10px] text-slate-500 mt-1 px-1">
-          {formatRelativeTime(message.createdAt)}
-        </span>
+        <div className="flex items-center gap-2 mt-1 px-1">
+          <span className="text-[10px] text-slate-500">
+            {formatRelativeTime(message.createdAt)}
+          </span>
+          <SpeakButton text={message.content} size="xs" variant="ghost" />
+        </div>
       </div>
     </div>
   );

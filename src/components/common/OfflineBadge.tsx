@@ -9,12 +9,13 @@ export const OfflineBadge: React.FC = () => {
     case 'offline_ready':
     case 'running_on_device':
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <WifiOff className="w-3.5 h-3.5" />
-          <span>Offline — AI Ready</span>
+        <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <WifiOff className="w-3 h-3" />
+          <span className="hidden sm:inline">Offline — AI Ready</span>
+          <span className="sm:hidden text-[11px]">Offline</span>
           {activeModel && (
-            <span className="hidden sm:inline text-emerald-400/70 border-l border-emerald-500/30 pl-1.5 ml-0.5 text-[11px]">
+            <span className="hidden md:inline text-emerald-400/70 border-l border-emerald-500/30 pl-1.5 ml-0.5 text-[11px]">
               {activeModel.displayName.split(' ')[0]}
             </span>
           )}

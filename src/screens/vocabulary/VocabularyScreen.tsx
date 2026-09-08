@@ -6,6 +6,8 @@ import { VocabularyWord } from '../../types';
 import { Flashcard } from '../../components/vocabulary/Flashcard';
 import { SpacedRepetition, ReviewGrade } from '../../learning/SpacedRepetition';
 import { BookOpen, Plus, Search, CheckCircle2, RotateCw, Volume2 } from 'lucide-react';
+import { SpeakButton } from '../../components/common/SpeakButton';
+import { PandaAvatar } from '../../components/common/PandaAvatar';
 
 export const VocabularyScreen: React.FC = () => {
   const { dueVocabulary, loadProgress } = useProgressStore();
@@ -100,21 +102,19 @@ export const VocabularyScreen: React.FC = () => {
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs">
             <span className="font-bold text-brand-300 uppercase tracking-wider">
-              SRS Review Queue ({activeReviewIndex + 1} of {dueVocabulary.length})
+              Daily Flashcards ({activeReviewIndex + 1} of {dueVocabulary.length})
             </span>
-            <span className="text-slate-400">SuperMemo-2 Algorithm</span>
+            <span className="text-emerald-400 font-medium text-[11px]">Tap to hear audio 🐼</span>
           </div>
 
           <Flashcard word={activeReviewWord} onGrade={handleGrade} />
         </div>
       ) : (
-        <div className="bg-slate-800/80 border border-slate-700/60 rounded-3xl p-5 text-center space-y-2">
-          <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <h3 className="text-sm font-bold text-white">All Due Reviews Completed!</h3>
-          <p className="text-xs text-slate-400">
-            Next review intervals are calculated according to your recall ratings.
+        <div className="bg-slate-800/80 border border-slate-700/60 rounded-3xl p-5 text-center space-y-2.5">
+          <PandaAvatar size="lg" mood="cheering" className="mx-auto" />
+          <h3 className="text-base font-bold text-white">All Caught Up for Today! 🐼</h3>
+          <p className="text-xs text-slate-300">
+            Pandi says you're doing fantastic! Review again tomorrow to keep your streak.
           </p>
         </div>
       )}
@@ -154,15 +154,18 @@ export const VocabularyScreen: React.FC = () => {
             key={word.id}
             className="p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/60 flex items-center justify-between text-xs"
           >
-            <div className="min-w-0">
-              <h4 className="font-bold text-white text-sm">{word.word}</h4>
+            <div className="min-w-0 flex-1 pr-2">
+              <div className="flex items-center gap-2">
+                <h4 className="font-bold text-white text-sm">{word.word}</h4>
+                <SpeakButton text={word.word} language={word.targetLanguage} size="xs" variant="ghost" />
+              </div>
               <p className="text-slate-300 text-xs mt-0.5">{word.translation}</p>
               <p className="text-[11px] text-slate-500 italic mt-1 truncate">
                 "{word.exampleSentence}"
               </p>
             </div>
 
-            <div className="text-right flex flex-col items-end flex-shrink-0 ml-3">
+            <div className="text-right flex flex-col items-end flex-shrink-0 ml-2">
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-900 text-brand-300 border border-slate-700">
                 SRS: {word.intervalDays}d
               </span>

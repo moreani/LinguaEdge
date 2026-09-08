@@ -1,35 +1,61 @@
-# Offline AI Language Tutor — Project Pack
+# LinguaEdge 🐼 — Offline AI Language Learning App
 
-This pack is the build specification for a cross-platform mobile language-learning app that runs an LLM on-device and works offline after the model is installed.
+An on-device, distraction-free language learning mobile app designed for seamless language learning. Featuring **Pandi the Panda 🐼** as your personal companion tutor, offline pronunciation audio (TTS), adaptive spaced-repetition flashcards, and 100% offline conversational AI.
 
-## Included
+> **Made with love for learning languages completely offline — Zero cloud APIs, Zero subscriptions, 100% Private.**
 
-- `01_MASTER_PRD.md` — complete product requirements document
-- `02_TECHNICAL_ARCHITECTURE.md` — app architecture, data model, inference layer, model manager, testing and deployment approach
-- `03_LLM_USAGE_GUIDE.md` — exactly where/when to use the LLM, where not to use it, prompting and structured-output strategy
-- `04_IMPLEMENTATION_ROADMAP.md` — phased build plan, milestones, acceptance criteria and testing checklist
-- `05_SKILLS_AND_RESOURCES.md` — skills to learn, why they matter, and current online resources
-- `UI_Mockup.png` — generated UI concept covering onboarding, dashboard, AI conversation, practice and progress
+---
 
-## Recommended starting stack
+## 📱 Pre-built Android APK
 
-- React Native + TypeScript
-- Native inference bridge using `llama.cpp`
-- GGUF model files
-- SQLite for local learning data
-- Zustand for app state
-- React Navigation for navigation
+You can directly install the pre-built application APK on any Android phone:
+- **Download APK:** [`apk/LinguaEdge.apk`](./apk/LinguaEdge.apk)
 
-## Build order
+### Installation
+1. **Via Direct Transfer:** Copy `apk/LinguaEdge.apk` to your Android device and tap to install.
+2. **Via ADB:**
+   ```bash
+   adb install -r apk/LinguaEdge.apk
+   ```
 
-1. Prove local inference on a real Android device.
-2. Build the React Native UI with mock data.
-3. Build the native bridge and streaming inference.
-4. Implement the Teacher Engine and structured AI responses.
-5. Add local learning memory and adaptive exercises.
-6. Test fully offline.
-7. Add voice only after the text product is stable.
+---
 
-## Important
+## ✨ Features
 
-The model/runtime layer is the highest-risk part of the project. Do not commit to a particular model size or GPU backend before measuring the target devices.
+- 🐼 **Pandi Tutor:** Expressive panda companion that guides you through conversation, cheers your progress, and helps correct grammar mistakes with gentle encouragement.
+- 🗣️ **Offline Speech & Pronunciation (TTS):** One-tap audio for every sentence, word, and correction in Korean, Spanish, English, etc. Adjustable speech speed (0.75x slow speed for beginners).
+- 💬 **Interactive Conversations:** Engaging dialogue scenarios (Restaurant Ordering, Airport Travel, Hobbies, Friends, Daily Routines) with instant replies and live translation hints.
+- 🎯 **Targeted Grammar Correction:** Instant detection of verb tense, preposition, and particle mistakes with clean pedagogical explanations.
+- 🗂️ **Spaced Repetition Vocabulary:** Interactive flip flashcards with SRS intervals, streak tracking, and audio pronunciation.
+- ⚡ **100% Offline & Private:** Runs entirely on-device with zero external server dependencies or cloud costs.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS + Lucide Icons
+- **Mobile Bridge:** Capacitor 8
+- **Audio & TTS:** `@capacitor-community/text-to-speech` with Android TTS engine
+- **State & Storage:** Zustand + Local IndexedDB / SQLite architecture
+- **Inference Engine:** On-device semantic engine + llama.cpp native bridge compatibility
+
+---
+
+## 🚀 Building from Source
+
+```bash
+# Install dependencies
+npm install
+
+# Build web distribution
+npm run build
+
+# Sync Capacitor assets
+npx cap sync android
+
+# Build debug APK
+cd android
+./gradlew assembleDebug
+```
+The resulting APK will be at `android/app/build/outputs/apk/debug/app-debug.apk`.
+

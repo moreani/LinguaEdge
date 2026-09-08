@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CorrectionResult } from '../../types';
 import { CheckCircle2, AlertTriangle, BookOpen, ChevronRight, X } from 'lucide-react';
 import { formatCategoryName } from '../../utils/formatters';
+import { SpeakButton } from '../common/SpeakButton';
 
 interface CorrectionCardProps {
   correction: CorrectionResult;
@@ -60,13 +61,16 @@ export const CorrectionCard: React.FC<CorrectionCardProps> = ({
             {correction.originalText}
           </p>
         </div>
-        <div className="border-t border-slate-800/60 pt-2">
-          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider block mb-0.5 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Better:
-          </span>
-          <p className="text-emerald-300 font-medium text-sm">
-            {correction.correctedText}
-          </p>
+        <div className="border-t border-slate-800/60 pt-2 flex items-center justify-between">
+          <div className="flex-1 pr-2">
+            <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider block mb-0.5 flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Better:
+            </span>
+            <p className="text-emerald-300 font-medium text-sm">
+              {correction.correctedText}
+            </p>
+          </div>
+          <SpeakButton text={correction.correctedText} size="sm" variant="pill" label="Listen" />
         </div>
       </div>
 

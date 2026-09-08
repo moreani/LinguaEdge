@@ -76,8 +76,23 @@ export const useConversationStore = create<ConversationState>((set, get) => ({
         messages: [assistantMsg],
         isGenerating: false
       });
-    } catch {
-      set({ isGenerating: false });
+    } catch (err) {
+      console.error('Error starting conversation:', err);
+      const greeting = user.targetLanguage === 'Korean'
+        ? `안녕하세요! 🐼 판디 선생님이에요. 오늘 "${topic}"에 대해 함께 즐겁게 이야기해 볼까요? (Hello! I'm Pandi. Let's practice "${topic}" together!)`
+        : `¡Hola! 🐼 Soy tu tutor Pandi. Hoy vamos a practicar "${topic}". ¿Cómo estás?`;
+      const assistantMsg: Message = {
+        id: 'msg_' + Date.now(),
+        conversationId: newConv.id,
+        role: 'assistant',
+        content: greeting,
+        createdAt: new Date().toISOString()
+      };
+      await messageRepo.addMessage(assistantMsg);
+      set({
+        messages: [assistantMsg],
+        isGenerating: false
+      });
     }
   },
 
@@ -150,7 +165,24 @@ export const useConversationStore = create<ConversationState>((set, get) => ({
       });
     } catch (err) {
       console.error('Error in conversation turn:', err);
-      set({ isGenerating: false });
+      const fallbackContent = user.targetLanguage === 'Korean'
+        ? `안녕하세요! 🐼 판디가 메시지를 잘 받았어요. 우리 계속해서 한국어로 이야기해 봐요! (I got your message! Shall we continue practicing?)`
+        : `¡Hola! 🐼 Pandi recibió tu mensaje. ¡Sigamos practicando juntos!`;
+
+      const fallbackMsg: Message = {
+        id: 'msg_' + Date.now() + 1,
+        conversationId: currentConversation.id,
+        role: 'assistant',
+        content: fallbackContent,
+        createdAt: new Date().toISOString()
+      };
+      await messageRepo.addMessage(fallbackMsg);
+
+      set({
+        messages: [...updatedMessages, fallbackMsg],
+        isGenerating: false,
+        streamingReply: ''
+      });
     }
   },
 

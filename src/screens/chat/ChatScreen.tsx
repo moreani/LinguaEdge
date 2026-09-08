@@ -6,6 +6,7 @@ import { CorrectionCard } from '../../components/chat/CorrectionCard';
 import { TopicSelector } from '../../components/chat/TopicSelector';
 import { Send, Sparkles, Flag, RefreshCw, ChevronLeft, Award } from 'lucide-react';
 import { ConversationTopic } from '../../types';
+import { PandaAvatar } from '../../components/common/PandaAvatar';
 
 interface ChatScreenProps {
   onPracticeTopic?: (category: string) => void;
@@ -107,8 +108,8 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ onPracticeTopic }) => {
         {/* Live token streaming bubble */}
         {isGenerating && streamingReply && (
           <div className="flex gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center text-brand-400">
-              <Sparkles className="w-4 h-4 animate-spin" />
+            <div className="flex-shrink-0">
+              <PandaAvatar size="sm" mood="talking" className="animate-bounce" />
             </div>
             <div className="max-w-[75%] px-4 py-3 rounded-2xl rounded-tl-xs bg-slate-800/90 text-slate-100 text-sm border border-slate-700/60 shadow-md">
               <p className="whitespace-pre-wrap">{streamingReply}</p>
@@ -179,12 +180,10 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ onPracticeTopic }) => {
       {showSummaryModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-brand-500/30 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-brand-500/20 text-brand-300 mx-auto flex items-center justify-center">
-              <Award className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-bold text-white">Lesson Completed!</h3>
+            <PandaAvatar size="xl" mood="cheering" className="mx-auto" />
+            <h3 className="text-xl font-bold text-white">You Did Amazing! 🐼</h3>
             <p className="text-xs text-slate-300">
-              {currentConversation.summary || 'Great dedication today! Consistent conversation practice creates natural fluency.'}
+              {currentConversation.summary || 'Pandi is proud of your effort! Keep practicing every day to become fluent.'}
             </p>
             <div className="p-3 bg-slate-800/80 rounded-2xl border border-slate-700/60 text-xs text-slate-300 space-y-1 text-left">
               <div className="flex justify-between">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Exercise } from '../../types';
 import { formatCategoryName } from '../../utils/formatters';
 import { CheckCircle2, XCircle } from 'lucide-react';
+import { SpeakButton } from '../common/SpeakButton';
 
 interface ExerciseRendererProps {
   exercise: Exercise;
@@ -38,10 +39,11 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
       </p>
 
       {/* Question Prompt */}
-      <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-700/60 mb-5">
-        <h3 className="text-base font-semibold text-white leading-relaxed">
+      <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-700/60 mb-5 flex items-start justify-between gap-3">
+        <h3 className="text-base font-semibold text-white leading-relaxed flex-1">
           {exercise.question}
         </h3>
+        <SpeakButton text={exercise.question} size="sm" variant="pill" label="Listen" />
       </div>
 
       {/* Options or Input */}

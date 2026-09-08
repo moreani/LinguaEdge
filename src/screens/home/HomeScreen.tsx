@@ -7,7 +7,7 @@ import { ProgressBar } from '../../components/common/ProgressBar';
 import { TabType } from '../../components/navigation/BottomNav';
 
 interface HomeScreenProps {
-  onNavigateTab: (tab: TabType) => void;
+  onNavigateTab: (tab: string) => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigateTab }) => {

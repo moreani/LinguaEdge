@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUserStore } from '../../store/userStore';
-import { useModelStore } from '../../store/modelStore';
+import { useVoiceStore } from '../../store/voiceStore';
 import { SupportedLanguage, CEFRLevel } from '../../types';
-import { Cpu, HardDrive, ShieldCheck, Download, Trash2, CheckCircle2, RotateCw, Globe, Target, AlertCircle } from 'lucide-react';
-import { formatMb, formatBytes } from '../../utils/formatters';
+import { ShieldCheck, Globe, Volume2 } from 'lucide-react';
+import { PandaAvatar } from '../../components/common/PandaAvatar';
 
 const ALL_LANGUAGES: SupportedLanguage[] = [
-  'Spanish', 'French', 'German', 'Japanese', 'Korean', 'English', 
+  'Korean', 'English', 'Spanish', 'French', 'German', 'Japanese', 
   'Italian', 'Portuguese', 'Mandarin', 'Hindi', 'Marathi'
 ];
 
@@ -14,23 +14,27 @@ const ALL_LEVELS: CEFRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1'];
 
 export const ProfileScreen: React.FC = () => {
   const { user, updateProfile } = useUserStore();
-  const { 
-    models, 
-    activeModel, 
-    storageInfo, 
-    downloadingModelId, 
-    downloadProgress, 
-    downloadModel, 
-    loadModel, 
-    unloadModel, 
-    deleteModel 
-  } = useModelStore();
+
+  const {
+    rate,
+    availableVoices,
+    selectedVoiceId,
+    loadVoices,
+    setRate,
+    setSelectedVoiceId,
+    testVoice
+  } = useVoiceStore();
 
   const [isUpdating, setIsUpdating] = useState(false);
+
+  useEffect(() => {
+    loadVoices(user?.targetLanguage);
+  }, [user?.targetLanguage]);
 
   const handleLanguageChange = async (targetLanguage: SupportedLanguage) => {
     setIsUpdating(true);
     await updateProfile({ targetLanguage });
+    await loadVoices(targetLanguage);
     setIsUpdating(false);
   };
 
@@ -92,122 +96,106 @@ export const ProfileScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* On-Device AI Model Manager */}
+      {/* Voice & Offline Speech (TTS) Settings */}
       <div className="bg-slate-800/80 border border-slate-700/60 rounded-3xl p-5 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-brand-400" />
-            <span>AI Model Manager</span>
+            <Volume2 className="w-4 h-4 text-brand-400" />
+            <span>Voice & Pronunciation (TTS)</span>
           </h3>
-          <span className="text-[10px] text-slate-400">GGUF Runtime</span>
+          <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            Offline Speech
+          </span>
         </div>
 
-        <div className="space-y-3">
-          {models.map(m => {
-            const isDownloading = downloadingModelId === m.id;
-            const isLoaded = activeModel?.id === m.id && m.isLoaded;
+        {/* Voice Selector */}
+        <div>
+          <label className="block text-[11px] text-slate-400 font-medium mb-1">
+            {user?.targetLanguage || 'Target'} Voice:
+          </label>
+          {availableVoices.length > 0 ? (
+            <select
+              value={selectedVoiceId || ''}
+              onChange={e => setSelectedVoiceId(e.target.value || null)}
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-500 truncate"
+            >
+              {availableVoices.map(v => (
+                <option key={v.id} value={v.id}>
+                  {v.name} ({v.lang})
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className="text-xs text-slate-400 bg-slate-900/60 border border-slate-800 rounded-xl p-2.5">
+              Default system {user?.targetLanguage || 'device'} voice
+            </div>
+          )}
+        </div>
 
-            return (
-              <div
-                key={m.id}
-                className={`p-3.5 rounded-2xl border transition-all text-xs ${
-                  isLoaded
-                    ? 'bg-brand-950/40 border-brand-500/60 ring-1 ring-brand-500/30'
-                    : 'bg-slate-900/60 border-slate-800'
+        {/* Speech Speed / Rate */}
+        <div>
+          <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium mb-1.5">
+            <span>Speech Speed:</span>
+            <span className="text-brand-300 font-bold">{rate}x</span>
+          </div>
+          <div className="grid grid-cols-4 gap-1.5">
+            {[
+              { val: 0.75, label: '0.75x Slow' },
+              { val: 0.9, label: '0.9x Learner' },
+              { val: 1.0, label: '1.0x Normal' },
+              { val: 1.25, label: '1.25x Fast' }
+            ].map(item => (
+              <button
+                key={item.val}
+                type="button"
+                onClick={() => setRate(item.val)}
+                className={`py-1.5 px-1 rounded-xl text-xs font-semibold border transition-all ${
+                  rate === item.val
+                    ? 'bg-brand-600 border-brand-500 text-white shadow-sm'
+                    : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <div className="flex items-start justify-between gap-2 mb-1.5">
-                  <div>
-                    <h4 className="font-bold text-white flex items-center gap-1.5">
-                      <span>{m.displayName}</span>
-                      {isLoaded && (
-                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-semibold">
-                          Active
-                        </span>
-                      )}
-                    </h4>
-                    <p className="text-[11px] text-slate-400 mt-0.5">{m.description}</p>
-                  </div>
-                  <span className="font-mono text-slate-400 font-semibold">{formatMb(m.sizeMb)}</span>
-                </div>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                <div className="flex items-center gap-3 text-[10px] text-slate-500 font-mono my-2">
-                  <span>RAM: {m.minRamGb}GB min</span>
-                  <span>Quant: {m.quantization}</span>
-                  <span>Format: GGUF</span>
-                </div>
-
-                {isDownloading ? (
-                  <div className="space-y-1.5 pt-1">
-                    <div className="flex justify-between text-[10px] text-brand-300 font-medium">
-                      <span>Downloading & Verifying SHA-256...</span>
-                      <span>{downloadProgress}%</span>
-                    </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                      <div className="bg-brand-500 h-full transition-all" style={{ width: `${downloadProgress}%` }} />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/80">
-                    {!m.isInstalled ? (
-                      <button
-                        onClick={() => downloadModel(m.id)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold transition-colors shadow-sm"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Download GGUF</span>
-                      </button>
-                    ) : isLoaded ? (
-                      <button
-                        onClick={() => unloadModel(m.id)}
-                        className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
-                      >
-                        Unload
-                      </button>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() => loadModel(m.id)}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors"
-                        >
-                          Load into RAM
-                        </button>
-                        <button
-                          onClick={() => deleteModel(m.id)}
-                          className="p-1.5 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition-colors"
-                          title="Delete model from device"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        {/* Test Voice Button */}
+        <div className="pt-1">
+          <button
+            type="button"
+            onClick={() => testVoice(user?.targetLanguage || 'English')}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-700/80 border border-slate-700 text-xs font-semibold text-brand-300 transition-colors"
+          >
+            <Volume2 className="w-4 h-4 text-brand-400" />
+            <span>Test {user?.targetLanguage || 'Target'} Pronunciation</span>
+          </button>
         </div>
       </div>
 
-      {/* Storage Information */}
-      <div className="bg-slate-800/80 border border-slate-700/60 rounded-3xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <HardDrive className="w-4 h-4 text-brand-400" />
-          <span>Device Storage Breakdown</span>
-        </h3>
+      {/* Pandi Companion Card */}
+      <div className="bg-gradient-to-br from-slate-900/90 via-slate-800 to-indigo-950/40 border border-brand-500/30 rounded-3xl p-5 space-y-3 text-center shadow-xl">
+        <PandaAvatar size="lg" mood="cheering" className="mx-auto" />
+        <h3 className="text-base font-bold text-white">Made With Love For You ❤️</h3>
+        <p className="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+          Pandi is here with you every step of the way! Practice a few minutes every day and you will master {user?.targetLanguage || 'your new language'}.
+        </p>
 
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between text-slate-300">
-            <span>Installed AI Models:</span>
-            <span className="font-semibold text-white">{formatMb(storageInfo.modelsUsedMb)}</span>
+        <div className="pt-2 border-t border-slate-800/80 flex items-center justify-around text-xs text-slate-400">
+          <div>
+            <span className="block font-bold text-white text-base">🔥 {user?.streakDays || 1}</span>
+            <span className="text-[10px]">Day Streak</span>
           </div>
-          <div className="flex justify-between text-slate-300">
-            <span>SQLite Database & Memory:</span>
-            <span className="font-semibold text-white">{formatMb(storageInfo.learningDataUsedMb)}</span>
+          <div className="h-6 w-px bg-slate-800" />
+          <div>
+            <span className="block font-bold text-brand-300 text-base">CEFR {user?.level || 'A1'}</span>
+            <span className="text-[10px]">Current Level</span>
           </div>
-          <div className="flex justify-between text-slate-300">
-            <span>Available Free Storage:</span>
-            <span className="font-semibold text-emerald-400">{formatMb(storageInfo.availableDeviceMb)}</span>
+          <div className="h-6 w-px bg-slate-800" />
+          <div>
+            <span className="block font-bold text-emerald-400 text-base">100%</span>
+            <span className="text-[10px]">Offline</span>
           </div>
         </div>
       </div>

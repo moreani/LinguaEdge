@@ -1,5 +1,6 @@
 import React from 'react';
 import { OfflineBadge } from './OfflineBadge';
+import { PandaAvatar } from './PandaAvatar';
 import { Flame, Globe } from 'lucide-react';
 import { useUserStore } from '../../store/userStore';
 
@@ -13,19 +14,22 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle, showLanguageBad
   const { user } = useUserStore();
 
   return (
-    <header className="sticky top-0 z-20 backdrop-blur-md bg-slate-900/80 border-b border-slate-800/80 px-4 py-3">
-      <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
-        <div className="min-w-0">
+    <header className="sticky top-0 z-20 backdrop-blur-md bg-slate-900/90 border-b border-slate-800/80 px-4 pt-12 pb-3 sm:pt-4">
+      <div className="max-w-3xl mx-auto flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-shrink-0">
           {title ? (
-            <h1 className="text-lg font-bold text-white truncate tracking-tight">{title}</h1>
+            <h1 className="text-base font-bold text-white truncate tracking-tight">{title}</h1>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-brand-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                LinguaEdge
-              </span>
-              <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300">
-                100% Offline
-              </span>
+              <PandaAvatar size="sm" mood="happy" />
+              <div className="flex flex-col">
+                <span className="font-extrabold text-sm tracking-tight bg-gradient-to-r from-brand-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent leading-tight">
+                  LinguaEdge
+                </span>
+                <span className="text-[10px] text-emerald-400 font-medium">
+                  🐼 Pandi Tutor
+                </span>
+              </div>
             </div>
           )}
           {subtitle && <p className="text-xs text-slate-400 truncate mt-0.5">{subtitle}</p>}
