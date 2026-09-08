@@ -13,9 +13,9 @@ export const MODEL_CATALOG: ModelInfo[] = [
     description: 'Fastest model, lowest memory consumption. Perfect for older or entry-level phones.',
     supportedLanguages: ['English', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Mandarin'],
     checksum: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-    isInstalled: true, // Default active offline bundle
-    isLoaded: true,
-    status: 'loaded'
+    isInstalled: true,
+    isLoaded: false,
+    status: 'installed'
   },
   {
     id: 'qwen2.5-1.5b-instruct',
@@ -29,9 +29,9 @@ export const MODEL_CATALOG: ModelInfo[] = [
     description: 'Premier multilingual model. Outstanding in Korean, Japanese, European languages and strict JSON schema output.',
     supportedLanguages: ['English', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Mandarin', 'Italian', 'Hindi'],
     checksum: '6a827d97b3724c96ad019b88ebcf196f1335b7194f4544d6739f4e24eb5efea0',
-    isInstalled: false,
-    isLoaded: false,
-    status: 'not_installed'
+    isInstalled: true,
+    isLoaded: true,
+    status: 'loaded'
   },
   {
     id: 'llama-3.2-1b-instruct',
