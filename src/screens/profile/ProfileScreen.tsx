@@ -6,7 +6,7 @@ import { Cpu, HardDrive, ShieldCheck, Download, Trash2, CheckCircle2, RotateCw, 
 import { formatMb, formatBytes } from '../../utils/formatters';
 
 const ALL_LANGUAGES: SupportedLanguage[] = [
-  'Spanish', 'French', 'German', 'Japanese', 'English', 
+  'Spanish', 'French', 'German', 'Japanese', 'Korean', 'English', 
   'Italian', 'Portuguese', 'Mandarin', 'Hindi', 'Marathi'
 ];
 

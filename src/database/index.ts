@@ -84,6 +84,54 @@ export async function seedInitialDataIfEmpty() {
         nextReview: new Date(Date.now() + 86400000 * 3).toISOString(),
         intervalDays: 4,
         easeFactor: 2.6
+      },
+      {
+        id: 'voc_kor_1',
+        word: '안녕하세요',
+        translation: 'Hello / Good day',
+        phonetic: 'an-nyeong-ha-se-yo',
+        partOfSpeech: 'Greeting',
+        exampleSentence: '선생님, 안녕하세요!',
+        exampleTranslation: 'Teacher, hello!',
+        targetLanguage: 'Korean' as const,
+        confidence: 4,
+        reviewCount: 3,
+        lastReviewed: new Date().toISOString(),
+        nextReview: new Date(Date.now() - 3600000).toISOString(),
+        intervalDays: 2,
+        easeFactor: 2.6
+      },
+      {
+        id: 'voc_kor_2',
+        word: '감사합니다',
+        translation: 'Thank you',
+        phonetic: 'gam-sa-ham-ni-da',
+        partOfSpeech: 'Expression',
+        exampleSentence: '도와주셔서 정말 감사합니다.',
+        exampleTranslation: 'Thank you very much for your help.',
+        targetLanguage: 'Korean' as const,
+        confidence: 3,
+        reviewCount: 2,
+        lastReviewed: new Date().toISOString(),
+        nextReview: new Date(Date.now() - 1800000).toISOString(),
+        intervalDays: 1,
+        easeFactor: 2.5
+      },
+      {
+        id: 'voc_kor_3',
+        word: '맛있어요',
+        translation: "It's delicious",
+        phonetic: 'ma-si-sseo-yo',
+        partOfSpeech: 'Adjective',
+        exampleSentence: '이 한국 음식이 아주 맛있어요.',
+        exampleTranslation: 'This Korean food is very delicious.',
+        targetLanguage: 'Korean' as const,
+        confidence: 2,
+        reviewCount: 1,
+        lastReviewed: new Date().toISOString(),
+        nextReview: new Date().toISOString(),
+        intervalDays: 1,
+        easeFactor: 2.5
       }
     ];
 

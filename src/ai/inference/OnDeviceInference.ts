@@ -231,6 +231,41 @@ export class OnDeviceInference implements LocalInference {
       };
     }
 
+    // Korean common past tense / destination error (e.g. "어제 학교 가요" -> "어제 학교에 갔어요")
+    if (/어제.*가요|작년.*가요|지난주.*가요/i.test(text)) {
+      const corrected = text
+        .replace(/학교\s*가요/g, '학교에 갔어요')
+        .replace(/가요/g, '갔어요');
+
+      return {
+        isCorrect: false,
+        corrected: corrected,
+        explanation: '과거 시제(어제, 지난주 등)를 나타낼 때는 현재형 "가요" 대신 과거형 "갔어요"를 사용해야 합니다.',
+        ruleSummary: '규칙: 동사 어간 "가-" 뒤에 과거 시제 선어말어미 "-았-"이 결합하여 "갔어요"가 됩니다.',
+        category: 'past_tense',
+        severity: 'moderate',
+        continuationReply: '좋아요! 학교에서 무엇을 배웠나요? (Nice! What did you learn at school?)',
+        nextExercisePrompt: '어제 친구를 ___ (만나다).',
+        nextExerciseTarget: '만났어요'
+      };
+    }
+
+    // Korean particle error (e.g. "저 는" / "나 는" without destination particle)
+    if (/학교\s+(가요|갔어요)/i.test(text) && !/학교에/.test(text)) {
+      const corrected = text.replace(/학교\s+(가요|갔어요)/g, '학교에 $1');
+      return {
+        isCorrect: false,
+        corrected: corrected,
+        explanation: '장소나 목적지 명사(학교) 뒤에는 목적지 조사 "-에"를 붙여야 자연스럽습니다.',
+        ruleSummary: '규칙: 가다, 오다 등의 이동 동사 앞에는 장소 목적격 조사 "-에"를 씁니다.',
+        category: 'prepositions',
+        severity: 'minor',
+        continuationReply: '학교에서 누구를 만났나요? (Who did you meet at school?)',
+        nextExercisePrompt: '내일 도서관___ 갈 거예요.',
+        nextExerciseTarget: '에'
+      };
+    }
+
     // Sentence is grammatically correct!
     return {
       isCorrect: true,

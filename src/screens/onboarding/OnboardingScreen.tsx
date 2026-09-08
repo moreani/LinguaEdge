@@ -6,7 +6,7 @@ import { Sparkles, Globe, Target, Cpu, HardDrive, CheckCircle2, ChevronRight, Sh
 import { formatMb } from '../../utils/formatters';
 
 const LANGUAGES: SupportedLanguage[] = [
-  'Spanish', 'French', 'German', 'Japanese', 'English', 
+  'Spanish', 'French', 'German', 'Japanese', 'Korean', 'English', 
   'Italian', 'Portuguese', 'Mandarin', 'Hindi', 'Marathi'
 ];
 

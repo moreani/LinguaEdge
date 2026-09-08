@@ -7,6 +7,7 @@ export type SupportedLanguage =
   | 'Italian' 
   | 'Portuguese' 
   | 'Mandarin'
+  | 'Korean'
   | 'Hindi'
   | 'Marathi';
 

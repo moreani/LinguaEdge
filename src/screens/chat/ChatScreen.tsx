@@ -57,7 +57,9 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ onPracticeTopic }) => {
   }
 
   // Quick suggested replies based on language
-  const suggestedReplies = user?.targetLanguage === 'Spanish'
+  const suggestedReplies = user?.targetLanguage === 'Korean'
+    ? ['안녕하세요! 오늘 날씨가 참 좋아요.', '어제 친구를 만났어요.', '이 음식 정말 맛있어요!']
+    : user?.targetLanguage === 'Spanish'
     ? ['Ayer yo fui al centro.', 'Me gusta mucho viajar.', '¿Qué me recomiendas?']
     : ['Yesterday I went downtown.', 'I really like traveling.', 'What do you recommend?'];
 
